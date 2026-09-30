@@ -22,17 +22,23 @@ app.use(bodyParser.json());
 const AT_USERNAME = process.env.AT_USERNAME || "sandbox";
 const AT_API_KEY = process.env.AT_API_KEY || "";
 
-const africastalking = AfricasTalking({
-  apiKey: AT_API_KEY,
-  username: AT_USERNAME,
-});
-const sms = africastalking.SMS;
+let sms = null;
+if (AT_API_KEY && AT_API_KEY !== "your_sandbox_api_key_here") {
+  const africastalking = AfricasTalking({
+    apiKey: AT_API_KEY,
+    username: AT_USERNAME,
+  });
+  sms = africastalking.SMS;
+} else {
+  console.warn("[WARN] AT_API_KEY not set — SMS features disabled. USSD and dashboard will still work.");
+}
 
 const EVENT_NAME = process.env.EVENT_NAME || "Our Hackathon Event";
 const EVENT_DATE = process.env.EVENT_DATE || "TBA";
 const EVENT_VENUE = process.env.EVENT_VENUE || "TBA";
 
 async function sendSmsSafe(message, recipients) {
+  if (!sms) return;
   try {
     await sms.send({ to: recipients, message });
   } catch (e) {
@@ -198,8 +204,16 @@ function escapeHtml(str) {
 const PORT = process.env.PORT || 5000;
 
 initDb().then(() => {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`EventHub running on port ${PORT}`);
     console.log(`Dashboard: http://localhost:${PORT}/dashboard`);
+  });
+  server.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`Port ${PORT} is already in use. Set the PORT env var to a free port.`);
+      process.exit(1);
+    } else {
+      throw err;
+    }
   });
 });

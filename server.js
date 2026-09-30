@@ -33,7 +33,7 @@ if (AT_API_KEY && AT_API_KEY !== "your_sandbox_api_key_here") {
   console.warn("[WARN] AT_API_KEY not set — SMS features disabled. USSD and dashboard will still work.");
 }
 
-const EVENT_NAME = process.env.EVENT_NAME || "Our Hackathon Event";
+const EVENT_NAME = "Ace Event Hub";
 const EVENT_DATE = process.env.EVENT_DATE || "TBA";
 const EVENT_VENUE = process.env.EVENT_VENUE || "TBA";
 

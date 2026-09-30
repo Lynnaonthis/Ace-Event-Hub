@@ -1,0 +1,5 @@
+.env
+node_modules/
+eventhub.json
+.DS_Store
+

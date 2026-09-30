@@ -1,0 +1,19 @@
+{
+  "name": "eventhub",
+  "version": "1.0.0",
+  "description": "Inclusive event registration & communication system built on Africa's Talking APIs",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "reminders": "node reminders.js"
+  },
+  "dependencies": {
+    "africastalking": "^0.7.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "lowdb": "^7.0.1"
+  }
+}
